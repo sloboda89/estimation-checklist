@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Estimation Checklist</title>
+</head>
+<body>
+<div id="checkboxes">
+    <label>Estimation: <span id='estimate'>0</span></label>
+    <ul>
+        <li>I need <input type="radio" name="initialEstimate" value="1"/> < 1<input type="radio" name="initialEstimate" value="2"/> 1-2<input type="radio" name="initialEstimate" value="3"/> 3-5<input type="radio" name="initialEstimate" value="5"/> > 5 days to implement / test it</li>
+        <li><input type="checkbox" value="1">I need to write unit tests (from scratch or change a lot)</li>
+        <li><input type="checkbox" value="1">I need to write documentation (from scratch or change a lot)</li>
+        <li><input type="checkbox" value="2">There are some blockers</li>
+        <li><input type="checkbox" value="2">There is 3rd party integration</li>
+    </ul>
+</div>
+<script>
+
+    let initialEstimate = 0.0;
+    let additionalEstimate = 0.0;
+
+    const initialEstimateRadios = document.querySelectorAll("input[type='radio']");
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    for (let i = 0; i < initialEstimateRadios.length; i++) {
+        initialEstimateRadios[i].addEventListener('change', function() {
+            if (this.checked) {
+                initialEstimate = parseFloat(this.value);
+                updateEstimate();
+            }
+        });
+    }
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('change', function() {
+            if (this.checked) {
+                additionalEstimate = additionalEstimate + parseFloat(this.value);
+            } else {
+                additionalEstimate = additionalEstimate - parseFloat(this.value);
+            }
+            updateEstimate();
+        });
+    }
+
+    function updateEstimate() {
+        document.getElementById("estimate").textContent = roundToFibonacci(initialEstimate + additionalEstimate).toString();
+    }
+
+    function roundToFibonacci(estimate) {
+        const fibonacci = [1, 2, 3, 5, 8, 13];
+        for (const num of fibonacci) {
+            if (estimate <= num) {
+                return num;
+            }
+        }
+        return 21;
+    }
+</script>
+</body>
+</html>
